@@ -2,7 +2,7 @@
 
 Visão completa da organização do framework Rosetta Alanine Scanning.
 
-## 🌲 Árvore de Diretórios
+## Árvore de Diretórios
 
 ```
 alaninescanning4eif4e/
@@ -14,37 +14,37 @@ alaninescanning4eif4e/
 ---  LICENSE                        # Licença MIT
 ---  .gitignore                     # Arquivos ignorados pelo Git
 |
---- 📦 setup.py                       # Configuração do pacote Python
---- 📦 requirements.txt               # Dependências Python
+--- setup.py                         # Configuração do pacote Python 
+--- requirements.txt                 # Dependências Python
 |
---- 📂 src/rosetta_scan/              #  Código-fonte principal
+---  src/rosetta_scan/               #  Código-fonte principal
 |   --- __init__.py
 |   --- cli.py                        # Interface CLI (Click)
 |   |
-|   --- 📂 protocols/                 # Protocolos do Rosetta
+|   --- protocols/                   # Protocolos do Rosetta
 |   |   --- __init__.py
 |   |   --- flex_ddg.py              # Protocolo Flex ddG
 |   |   --- alanine_scanner.py       # Gerador de mutações
 |   |
-|   --- 📂 analysis/                  # Análise e visualização
+|   --- analysis/                    # Análise e visualização
 |   |   --- __init__.py
 |   |   --- parser.py                # Parser de resultados
 |   |   --- visualizer.py            # Gerador de plots
 |   |
-|   --- 📂 utils/                     # Utilidades gerais
+|   --- utils/                       # Utilidades gerais
 |       --- __init__.py
 |
---- 📂 config/                        # Configurações
+--- config/                          # Configurações
 |   --- example_config.yaml          # Configuração exemplo
 |
---- 📂 examples/                      #  Exemplos e demos
+--- examples/                        #  Exemplos e demos
 |   --- example_protein.pdb          # Estrutura PDB exemplo
 |   --- example_workflow.py          # Workflow Python exemplo
 |   --- demo_run.py                  # Demo interativo completo
 |   --- quick_test.sh                # Script de teste rápido
 |   --- EXPECTED_OUTPUT.md           # Exemplos de saída
 |   |
-|   --- 📂 demo_output/              # Saída do demo (gerado)
+|   --- demo_output/                 # Saída do demo (gerado)
 |       --- mutations.txt
 |       --- mutations_rosetta.txt
 |       --- mutations.csv
@@ -53,7 +53,7 @@ alaninescanning4eif4e/
 |       --- hotspots.csv
 |       --- analysis_report.txt
 |       --- visualize_hotspots.pml
-|       --- 📂 plots/
+|       --- plots/
 |           --- ddg_distribution.png
 |           --- top_hotspots.png
 |           --- chain_analysis.png
@@ -61,7 +61,7 @@ alaninescanning4eif4e/
 |           --- position_scan_chain_A.png
 |           --- position_scan_chain_B.png
 |
---- 📂 tests/                         # Testes unitários (futuro)
+--- tests/                          # Testes unitários (futuro)
     --- __init__.py
 ```
 
@@ -178,7 +178,7 @@ Output Files:
     --- visualize_hotspots.pml     # PyMOL script
 ```
 
-## 🔄 Fluxo de Dados
+## Fluxo de Dados
 
 ```
 ------------------------------------------------------------------┐
@@ -380,7 +380,7 @@ visualizer = ResultVisualizer(results_df)
 visualizer.plot_my_visualization('output.png')
 ```
 
-## 🧪 Testing
+## Testing
 
 ```python
 # Estrutura para testes (futuro)
@@ -448,7 +448,7 @@ Arquivos Exemplo:        4
 ---
 
 **Navegação Rápida:**
-- [🏠 README](README.md)
-- [📦 Installation](INSTALL.md)
+- [ README](README.md)
+- [ Installation](INSTALL.md)
 - [ Demo](DEMO.md)
 - [ Expected Output](examples/EXPECTED_OUTPUT.md)

@@ -190,7 +190,7 @@ cd /Users/madsonluna/Documents/alaninescanning4eif4e
 python3 examples/demo_run.py
 ```
 
-### 🧪 Pipeline Completo
+### Pipeline Completo
 
 ```bash
 # Sem Rosetta (demo com dados simulados)
@@ -344,7 +344,7 @@ rosetta-scan scan protein.pdb --range "A:100-200"
 
 ---
 
-## 🧪 Validação
+## Validação
 
 ###  Testado Com:
 
