@@ -9,7 +9,14 @@ from typing import List, Optional, Set, Dict, Union
 from dataclasses import dataclass
 from Bio import PDB
 from Bio.PDB.Structure import Structure
-from Bio.PDB.Polypeptide import is_aa, three_to_one
+from Bio.PDB.Polypeptide import is_aa
+try:
+    from Bio.PDB.Polypeptide import three_to_one
+except ImportError:
+    # For newer BioPython versions
+    from Bio.Data.PDBData import protein_letters_3to1
+    def three_to_one(three_letter_code):
+        return protein_letters_3to1.get(three_letter_code, 'X')
 import re
 
 
