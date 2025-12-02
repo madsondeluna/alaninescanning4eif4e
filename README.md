@@ -1,6 +1,6 @@
 # Rosetta Alanine Scanning - Flex ddG Protocol
 
-An elegant Python framework for computational alanine scanning and hotspot identification using Rosetta's Flex ddG protocol.
+A Python framework for computational alanine scanning and hotspot identification using Rosetta's Flex ddG protocol.
 
 ## Features
 
