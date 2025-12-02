@@ -1,0 +1,9 @@
+click>=8.1.7
+biopython>=1.81
+pandas>=2.0.0
+numpy>=1.24.0
+matplotlib>=3.7.0
+seaborn>=0.12.0
+pyyaml>=6.0
+rich>=13.0.0
+pyrosetta>=2024.1.0

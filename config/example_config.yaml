@@ -1,0 +1,84 @@
+# Rosetta Flex ddG Configuration Example
+#
+# This file contains all configurable parameters for the Flex ddG protocol.
+# Adjust these values based on your computational resources and accuracy needs.
+
+# ============================================================================
+# PROTOCOL PARAMETERS
+# ============================================================================
+
+# Number of structures to generate per mutation
+# Recommended: 35 for production runs, 5-10 for testing
+# Higher values = better statistics but longer runtime
+nstruct: 35
+
+# Number of backrub iterations
+# Controls the amount of backbone sampling
+# Recommended: 3 (default), increase to 5 for more sampling
+iterations: 3
+
+# Repacking shell radius (Ångströms)
+# Residues within this distance will be repacked during calculations
+# Recommended: 8.0 Å
+repack_radius: 8.0
+
+# ============================================================================
+# PROTOCOL OPTIONS
+# ============================================================================
+
+# Enable backrub moves for backbone sampling
+# Recommended: true for flexible regions, false for rigid structures
+use_backrub: true
+
+# Use Talaris2014 score function instead of REF2015
+# Recommended: false (use REF2015, which is more accurate)
+use_talaris2014: false
+
+# Enable interface ddG mode for protein-protein interactions
+# Set to true when analyzing binding interfaces
+# Set to false for folding stability studies
+interface_ddg: false
+
+# ============================================================================
+# COMPUTATIONAL RESOURCES
+# ============================================================================
+
+# Number of processors to use
+# Rosetta supports MPI parallelization
+num_processors: 1
+
+# Memory allocation per process (GB)
+# Increase for large complexes
+memory_gb: 4
+
+# ============================================================================
+# ROSETTA INSTALLATION
+# ============================================================================
+
+# Path to Rosetta installation directory
+# If not set, will use $ROSETTA environment variable
+# Example: /path/to/rosetta_3.XX
+rosetta_path: null
+
+# Path to Rosetta database
+# Usually: {rosetta_path}/main/database
+# If not set, will be auto-detected from rosetta_path
+rosetta_database: null
+
+# ============================================================================
+# NOTES
+# ============================================================================
+#
+# Production Run Settings:
+#   - nstruct: 35
+#   - iterations: 3
+#   - interface_ddg: true (for interfaces)
+#
+# Test Run Settings (faster):
+#   - nstruct: 5
+#   - iterations: 1
+#
+# High Accuracy Settings (slower):
+#   - nstruct: 50
+#   - iterations: 5
+#   - repack_radius: 10.0
