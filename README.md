@@ -7,7 +7,7 @@ A Python framework for computational alanine scanning and hotspot identification
 - **Automated Alanine Scanning**: Generate systematic alanine mutations from PDB structures
 - **Flex ddG Protocol**: Run Rosetta's state-of-the-art Flex ddG calculations
 - **Interface Analysis**: Identify interface residues and hotspots in protein-protein interactions
-- **Rich Visualizations**: Generate publication-quality plots and heatmaps
+- **Visualizations**: Generate publication-quality plots and heatmaps
 - **CLI Interface**: Intuitive command-line interface with progress tracking
 - **Complete Pipeline**: End-to-end workflow from structure to results
 
@@ -39,6 +39,20 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 # Install package and dependencies
 pip install -e .
 ```
+
+## Quick Demo
+
+Try the complete workflow with example data (no Rosetta required):
+
+```bash
+# Run the interactive demo
+python3 examples/demo_run.py
+
+# View the generated outputs
+ls examples/demo_output/
+```
+
+**[See detailed demo guide](DEMO.md)** with step-by-step instructions and expected outputs.
 
 ## Quick Start
 
@@ -89,7 +103,7 @@ rosetta-scan analyze ddg_results/ \
     --output analysis.csv
 ```
 
-## 📚 Detailed Usage
+## Detailed Usage
 
 ### Mutation Generation
 
@@ -202,17 +216,17 @@ rosetta_database: /path/to/rosetta/main/database
 
 ```
 results/
-├── mutations.txt             # Rosetta mutation file
-├── ddg_results/              # Flex ddG output
-│   ├── score.sc              # Score file
-│   └── rosetta.log           # Rosetta log
-├── results.csv               # Parsed results
-├── analysis_report.txt       # Summary report
-└── plots/                    # Visualizations
-    ├── ddg_distribution.png
-    ├── hotspot_heatmap.png
-    ├── chain_analysis.png
-    └── top_hotspots.png
+--- mutations.txt             # Rosetta mutation file
+--- ddg_results/              # Flex ddG output
+|   --- score.sc              # Score file
+|   --- rosetta.log           # Rosetta log
+--- results.csv               # Parsed results
+--- analysis_report.txt       # Summary report
+--- plots/                    # Visualizations
+    --- ddg_distribution.png
+    --- hotspot_heatmap.png
+    --- chain_analysis.png
+    --- top_hotspots.png
 ```
 
 ## Python API
@@ -336,4 +350,4 @@ For questions or issues:
 
 ---
 
-Made with ❤️ for computational protein engineering
+Made with  for computational protein engineering

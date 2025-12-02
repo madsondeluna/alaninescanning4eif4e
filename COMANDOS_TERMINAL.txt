@@ -1,0 +1,322 @@
+================================================================================
+COMANDOS PARA EXECUTAR NO TERMINAL DO VSCODE
+================================================================================
+
+Copie e cole estes comandos no terminal integrado do VSCode.
+
+================================================================================
+SETUP COMPLETO (Execute apenas uma vez)
+================================================================================
+
+# 1. Navegue para o diretório do projeto
+cd /Users/madsonluna/Documents/alaninescanning4eif4e
+
+# 2. Crie o ambiente virtual Python
+python3 -m venv venv
+
+# 3. Ative o ambiente virtual
+source venv/bin/activate
+
+# 4. Instale o pacote e dependências
+pip install -e .
+
+# 5. Verifique a instalação
+rosetta-scan --version
+
+================================================================================
+EXECUTAR DEMO COMPLETO (Recomendado para primeira vez)
+================================================================================
+
+# Execute o script de demonstração interativo
+python3 examples/demo_run.py
+
+# Isso vai:
+# - Analisar estrutura PDB exemplo
+# - Gerar 6 mutações de alanina
+# - Simular resultados ddG
+# - Identificar 3 hotspots
+# - Criar 6 visualizações
+# - Gerar relatórios e scripts PyMOL
+#
+# Tempo: ~10-15 segundos
+# Output: examples/demo_output/
+
+================================================================================
+EXPLORAR RESULTADOS DO DEMO
+================================================================================
+
+# Ver todos os arquivos gerados
+ls -la examples/demo_output/
+
+# Ler relatório principal
+cat examples/demo_output/analysis_report.txt
+
+# Ver hotspots identificados
+cat examples/demo_output/hotspots.csv
+
+# Ver lista de mutações
+cat examples/demo_output/mutations.txt
+
+# Abrir diretório de plots (macOS)
+open examples/demo_output/plots/
+
+# Ou visualizar um plot específico
+open examples/demo_output/plots/top_hotspots.png
+
+================================================================================
+TESTAR COMANDOS CLI
+================================================================================
+
+# Ver ajuda geral
+rosetta-scan --help
+
+# Ver comandos disponíveis:
+# - scan      : Gerar mutações
+# - run       : Executar Flex ddG
+# - analyze   : Analisar resultados
+# - pipeline  : Pipeline completo
+# - init-config : Gerar configuração
+
+# Ver ajuda de comando específico
+rosetta-scan scan --help
+
+# Testar comando scan
+rosetta-scan scan examples/example_protein.pdb \
+    --chains A B \
+    --output test_output/
+
+# Ver resultados
+cat test_output/mutations.txt
+
+# Testar scan de interface apenas
+rosetta-scan scan examples/example_protein.pdb \
+    --chains A B \
+    --interface-only \
+    --interface-cutoff 8.0 \
+    --output interface_test/
+
+cat interface_test/mutations.txt
+
+# Gerar configuração exemplo
+rosetta-scan init-config -o meu_config.yaml
+
+# Ver configuração gerada
+cat meu_config.yaml
+
+================================================================================
+USAR COM SUA PRÓPRIA ESTRUTURA PDB
+================================================================================
+
+# 1. Coloque seu arquivo PDB no diretório
+# Exemplo: minha_proteina.pdb
+
+# 2. Gerar mutações
+rosetta-scan scan minha_proteina.pdb \
+    --chains A \
+    --output meus_resultados/
+
+# 3. Ver mutações geradas
+cat meus_resultados/mutations.txt
+
+# 4. Se tiver múltiplas cadeias
+rosetta-scan scan minha_proteina.pdb \
+    --chains A B C \
+    --output meus_resultados_multi/
+
+# 5. Para analisar apenas interface
+rosetta-scan scan complexo.pdb \
+    --chains A B \
+    --interface-only \
+    --output interface_analise/
+
+================================================================================
+PIPELINE COMPLETO COM ROSETTA (Requer Rosetta instalado)
+================================================================================
+
+# ATENÇÃO: Estes comandos requerem Rosetta instalado!
+# Se você não tem Rosetta, pule esta seção.
+
+# 1. Configure variável de ambiente do Rosetta
+export ROSETTA=/path/to/your/rosetta
+
+# 2. Execute pipeline completo
+rosetta-scan pipeline minha_proteina.pdb \
+    --chains A B \
+    --interface-only \
+    --nstruct 35 \
+    --output resultados_rosetta/
+
+# 3. Ou execute passo a passo:
+
+# a) Gerar mutações
+rosetta-scan scan minha_proteina.pdb \
+    --chains A B \
+    --output passo1/
+
+# b) Executar Flex ddG
+rosetta-scan run minha_proteina.pdb \
+    passo1/mutations_rosetta.txt \
+    --nstruct 35 \
+    --iterations 3 \
+    --output passo2_ddg/
+
+# c) Analisar resultados
+rosetta-scan analyze passo2_ddg/ \
+    --plot \
+    --threshold 1.5 \
+    --output passo3_analise.csv
+
+================================================================================
+ATALHOS ÚTEIS
+================================================================================
+
+# Setup rápido (faz tudo de uma vez)
+cd /Users/madsonluna/Documents/alaninescanning4eif4e && \
+python3 -m venv venv && \
+source venv/bin/activate && \
+pip install -e . && \
+python3 examples/demo_run.py
+
+# Reativar ambiente (quando abrir novo terminal)
+cd /Users/madsonluna/Documents/alaninescanning4eif4e
+source venv/bin/activate
+
+# Ver estrutura do projeto
+ls -R
+
+# Ler documentação
+cat README.md
+cat DEMO.md
+cat INSTALL.md
+
+================================================================================
+TROUBLESHOOTING
+================================================================================
+
+# Se "python3" não funcionar, tente "python"
+python --version
+python examples/demo_run.py
+
+# Se "rosetta-scan" não for encontrado
+python -m rosetta_scan.cli --help
+
+# Se der erro de módulo não encontrado
+pip install -e . --force-reinstall
+
+# Se plots não aparecerem
+export MPLBACKEND=Agg
+python3 examples/demo_run.py
+
+# Limpar cache Python
+find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null
+
+# Reinstalar do zero
+rm -rf venv/
+python3 -m venv venv
+source venv/bin/activate
+pip install -e .
+
+================================================================================
+VISUALIZAÇÃO 3D (Se tiver PyMOL instalado)
+================================================================================
+
+# Visualizar hotspots no PyMOL
+pymol examples/demo_output/visualize_hotspots.pml
+
+# Ou carregar manualmente:
+# 1. Abra PyMOL
+# 2. File > Run Script
+# 3. Selecione: examples/demo_output/visualize_hotspots.pml
+
+================================================================================
+OUTPUTS ESPERADOS
+================================================================================
+
+Após executar o demo, você terá:
+
+examples/demo_output/
+--- mutations.txt              ← Lista legível de mutações
+--- mutations_rosetta.txt      ← Formato para Rosetta
+--- mutations.csv              ← Formato planilha
+--- interface_mutations.txt    ← Apenas interface
+--- ddg_results.csv            ← Todos resultados ddG
+--- hotspots.csv               ← Hotspots identificados 
+--- analysis_report.txt        ← Relatório completo 
+--- visualize_hotspots.pml     ← Script PyMOL
+--- plots/                     ← Visualizações 
+    --- ddg_distribution.png
+    --- top_hotspots.png
+    --- chain_analysis.png
+    --- hotspot_heatmap.png
+    --- position_scan_chain_A.png
+    --- position_scan_chain_B.png
+
+================================================================================
+INTERPRETAÇÃO DOS RESULTADOS
+================================================================================
+
+No arquivo hotspots.csv você verá algo como:
+
+mutation,chain,position,original_aa,ddg
+A2L,A,2,L,2.64
+B2W,B,2,W,2.13
+A4K,A,4,K,1.76
+
+Interpretação:
+- ddG > 2.5:  Hotspot CRÍTICO (essencial!)
+- ddG > 2.0:  Hotspot ALTO (muito importante)
+- ddG > 1.5:  Hotspot MÉDIO (significativo)
+- ddG < 1.5:  Contribuição menor
+
+Exemplo: A2L com ddG=2.64
+→ Leucina na posição 2 da cadeia A é CRÍTICA
+→ Mutá-la para alanina causa perda de 2.64 kcal/mol
+→ Provavelmente faz contatos importantes
+→ Deve ser conservada!
+
+================================================================================
+CHECKLIST DE PRIMEIRA EXECUÇÃO
+================================================================================
+
+  1. Abri o terminal do VSCode
+  2. Naveguei para o diretório correto
+  3. Criei ambiente virtual (venv)
+  4. Ativei o ambiente (source venv/bin/activate)
+  5. Instalei o pacote (pip install -e .)
+  6. Executei o demo (python3 examples/demo_run.py)
+  7. Vi a saída completa no terminal
+  8. Explorei os arquivos gerados
+  9. Visualizei os plots criados
+  10. Li o relatório de análise
+  11. Testei comando CLI (rosetta-scan --help)
+  12. Pronto para usar! 
+
+================================================================================
+PRÓXIMOS PASSOS
+================================================================================
+
+Depois de executar o demo com sucesso:
+
+1. Ler documentação detalhada:
+   cat DEMO.md
+
+2. Entender a estrutura do código:
+   cat PROJECT_STRUCTURE.md
+
+3. Ver todos os exemplos de saída:
+   cat examples/EXPECTED_OUTPUT.md
+
+4. Usar com sua própria proteína!
+
+5. Se tiver Rosetta, executar pipeline completo
+
+================================================================================
+COMANDO MAIS IMPORTANTE (COMECE AQUI!)
+================================================================================
+
+python3 examples/demo_run.py
+
+Este comando executa o demo completo e mostra todas as funcionalidades!
+
+===========================================================================================
+FIM ============================================================================================

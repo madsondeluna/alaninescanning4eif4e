@@ -11,19 +11,19 @@ echo "======================================================================"
 
 # Check if virtual environment is active
 if [[ -z "${VIRTUAL_ENV}" ]]; then
-    echo "⚠️  Warning: No virtual environment detected"
+    echo "  Warning: No virtual environment detected"
     echo "   Consider activating your venv: source venv/bin/activate"
     echo ""
 fi
 
 # Check for ROSETTA environment variable
 if [[ -z "${ROSETTA}" ]]; then
-    echo "❌ Error: ROSETTA environment variable not set"
+    echo " Error: ROSETTA environment variable not set"
     echo "   Set it with: export ROSETTA=/path/to/rosetta"
     exit 1
 fi
 
-echo "✅ ROSETTA path: $ROSETTA"
+echo " ROSETTA path: $ROSETTA"
 echo ""
 
 # Create test directory
@@ -32,7 +32,7 @@ mkdir -p "$TEST_DIR"
 
 # Check if example PDB exists
 if [[ ! -f "protein.pdb" ]]; then
-    echo "⚠️  No protein.pdb found. Please provide a test PDB file."
+    echo "  No protein.pdb found. Please provide a test PDB file."
     echo ""
     echo "You can download a test structure:"
     echo "  wget https://files.rcsb.org/download/1ABC.pdb -O protein.pdb"
@@ -50,11 +50,11 @@ rosetta-scan scan protein.pdb \
     --format rosetta
 
 if [[ $? -ne 0 ]]; then
-    echo "❌ Mutation generation failed"
+    echo " Mutation generation failed"
     exit 1
 fi
 
-echo "✅ Mutations generated"
+echo " Mutations generated"
 echo ""
 
 # Step 2: Initialize config (optional)
@@ -64,7 +64,7 @@ rosetta-scan init-config -o "$TEST_DIR/config.yaml"
 # Edit config for test run (small nstruct)
 sed -i.bak 's/nstruct: 35/nstruct: 2/' "$TEST_DIR/config.yaml"
 
-echo "✅ Configuration created"
+echo " Configuration created"
 echo ""
 
 # Step 3: Display help
@@ -73,7 +73,7 @@ rosetta-scan --help
 
 echo ""
 echo "======================================================================"
-echo "✅ Quick test completed successfully!"
+echo " Quick test completed successfully!"
 echo "======================================================================"
 echo ""
 echo "To run a full analysis:"

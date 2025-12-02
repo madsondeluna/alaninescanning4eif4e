@@ -25,7 +25,7 @@ console = Console()
 @click.version_option(version="0.1.0")
 def main():
     """
-    🧬 Rosetta Alanine Scanning - Elegant Flex ddG Protocol
+     Rosetta Alanine Scanning - Elegant Flex ddG Protocol
 
     A sophisticated tool for computational alanine scanning and
     hotspot identification using Rosetta's Flex ddG protocol.
@@ -78,7 +78,7 @@ def scan(pdb_file, chains, range, interface_only, interface_cutoff, output, form
     Example:
         rosetta-scan scan protein.pdb -c A -c B --interface-only
     """
-    console.print("\n[bold cyan]🔬 Alanine Scanning Mutation Generator[/bold cyan]\n")
+    console.print("\n[bold cyan] Alanine Scanning Mutation Generator[/bold cyan]\n")
 
     with Progress(
         SpinnerColumn(),
@@ -135,7 +135,7 @@ def scan(pdb_file, chains, range, interface_only, interface_cutoff, output, form
     output_file = output_dir / f"mutations.{format}"
     scanner.save_mutation_report(output_file, format=format)
 
-    console.print(f"\n✅ Mutations saved to: [bold]{output_file}[/bold]\n")
+    console.print(f"\n Mutations saved to: [bold]{output_file}[/bold]\n")
 
 
 @main.command()
@@ -183,7 +183,7 @@ def run(pdb_file, mutation_file, config, nstruct, iterations, interface, output,
     Example:
         rosetta-scan run protein.pdb mutations.txt --nstruct 35
     """
-    console.print("\n[bold cyan]🧬 Running Flex ddG Protocol[/bold cyan]\n")
+    console.print("\n[bold cyan] Running Flex ddG Protocol[/bold cyan]\n")
 
     # Load configuration
     if config:
@@ -225,7 +225,7 @@ def run(pdb_file, mutation_file, config, nstruct, iterations, interface, output,
     with console.status("[bold green]Initializing Rosetta protocol..."):
         protocol = FlexDdGProtocol(flex_config)
 
-    console.print("✅ Protocol initialized\n")
+    console.print(" Protocol initialized\n")
 
     # Run protocol
     try:
@@ -236,11 +236,11 @@ def run(pdb_file, mutation_file, config, nstruct, iterations, interface, output,
                 output_dir=output
             )
 
-        console.print(f"✅ Calculations complete!\n")
-        console.print(f"📁 Results saved to: [bold]{result_dir}[/bold]\n")
+        console.print(f" Calculations complete!\n")
+        console.print(f" Results saved to: [bold]{result_dir}[/bold]\n")
 
     except Exception as e:
-        console.print(f"[bold red]❌ Error:[/bold red] {str(e)}\n")
+        console.print(f"[bold red] Error:[/bold red] {str(e)}\n")
         raise
 
 
@@ -270,7 +270,7 @@ def analyze(results_dir, output, plot, threshold):
     Example:
         rosetta-scan analyze ddg_results/ --plot --threshold 1.5
     """
-    console.print("\n[bold cyan]📊 Analyzing Flex ddG Results[/bold cyan]\n")
+    console.print("\n[bold cyan] Analyzing Flex ddG Results[/bold cyan]\n")
 
     with Progress(
         SpinnerColumn(),
@@ -327,7 +327,7 @@ def analyze(results_dir, output, plot, threshold):
         elif output_path.suffix == '.json':
             results_df.to_json(output_path, orient='records', indent=2)
 
-        console.print(f"💾 Results saved to: [bold]{output_path}[/bold]\n")
+        console.print(f" Results saved to: [bold]{output_path}[/bold]\n")
 
     # Generate plots
     if plot:
@@ -340,7 +340,7 @@ def analyze(results_dir, output, plot, threshold):
             visualizer.plot_hotspot_heatmap(plot_dir / "hotspot_heatmap.png")
             visualizer.plot_per_chain_analysis(plot_dir / "chain_analysis.png")
 
-        console.print(f"📈 Plots saved to: [bold]{plot_dir}[/bold]\n")
+        console.print(f" Plots saved to: [bold]{plot_dir}[/bold]\n")
 
 
 @main.command()
@@ -358,12 +358,12 @@ def init_config(output):
     Example:
         rosetta-scan init-config -o my_config.yaml
     """
-    console.print("\n[bold cyan]📝 Generating Configuration File[/bold cyan]\n")
+    console.print("\n[bold cyan] Generating Configuration File[/bold cyan]\n")
 
     config = FlexDdGConfig()
     config.save_yaml(output)
 
-    console.print(f"✅ Configuration saved to: [bold]{output}[/bold]\n")
+    console.print(f" Configuration saved to: [bold]{output}[/bold]\n")
     console.print("Edit this file to customize protocol parameters.\n")
 
 
@@ -414,7 +414,7 @@ def pipeline(pdb_file, chains, interface_only, nstruct, output, config, rosetta_
     Example:
         rosetta-scan pipeline protein.pdb -c A -c B --interface-only
     """
-    console.print("\n[bold cyan]🔬 Alanine Scanning Pipeline[/bold cyan]\n")
+    console.print("\n[bold cyan] Alanine Scanning Pipeline[/bold cyan]\n")
 
     output_dir = Path(output)
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -434,7 +434,7 @@ def pipeline(pdb_file, chains, interface_only, nstruct, output, config, rosetta_
     scanner.save_mutation_report(mutation_file, format='rosetta')
 
     summary = scanner.get_mutation_summary()
-    console.print(f"✅ Generated {summary['total_mutations']} mutations\n")
+    console.print(f" Generated {summary['total_mutations']} mutations\n")
 
     # Step 2: Run Flex ddG
     console.print("[bold]Step 2/3:[/bold] Running Flex ddG protocol\n")
@@ -458,7 +458,7 @@ def pipeline(pdb_file, chains, interface_only, nstruct, output, config, rosetta_
             output_dir=ddg_dir
         )
 
-    console.print("✅ Flex ddG calculations complete\n")
+    console.print(" Flex ddG calculations complete\n")
 
     # Step 3: Analyze results
     console.print("[bold]Step 3/3:[/bold] Analyzing results\n")
@@ -478,9 +478,9 @@ def pipeline(pdb_file, chains, interface_only, nstruct, output, config, rosetta_
     visualizer.plot_ddg_distribution(plot_dir / "ddg_distribution.png")
     visualizer.plot_hotspot_heatmap(plot_dir / "hotspot_heatmap.png")
 
-    console.print(f"✅ Analysis complete\n")
-    console.print(f"📊 Found {len(hotspots)} hotspots\n")
-    console.print(f"📁 All results saved to: [bold]{output_dir}[/bold]\n")
+    console.print(f" Analysis complete\n")
+    console.print(f" Found {len(hotspots)} hotspots\n")
+    console.print(f" All results saved to: [bold]{output_dir}[/bold]\n")
 
 
 if __name__ == '__main__':
