@@ -305,7 +305,7 @@ Contributions are welcome! Please feel free to submit issues or pull requests.
 
 This project is licensed under the MIT License - see [LICENSE](LICENSE) file.
 
-## cknowledgments
+## Acknowledgments
 
 - Rosetta Commons for the Rosetta software suite
 - Barlow et al. for the Flex ddG protocol
