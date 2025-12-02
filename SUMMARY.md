@@ -194,16 +194,11 @@ python3 examples/demo_run.py
 
 ```bash
 # Sem Rosetta (demo com dados simulados)
-rosetta-scan scan examples/example_protein.pdb
-    --chains A B
-    --interface-only
+rosetta-scan scan examples/example_protein.pdb --chains A B --interface-only
 
 # Com Rosetta (produção)
 export ROSETTA=/path/to/rosetta
-rosetta-scan pipeline protein.pdb
-    --chains A B
-    --interface-only
-    --nstruct 35
+rosetta-scan pipeline protein.pdb --chains A B --interface-only --nstruct 35
 ```
 
 ---
@@ -326,10 +321,7 @@ Maintainability:        Alta (bem documentado)
 ### 1. Identificação de Hotspots de Interface
 
 ```bash
-rosetta-scan pipeline complex.pdb
-    --chains A B
-    --interface-only
-    --nstruct 35
+rosetta-scan pipeline complex.pdb --chains A B --interface-only --nstruct 35
 ```
 
 **Aplicação:** Descoberta de drug targets
@@ -337,9 +329,7 @@ rosetta-scan pipeline complex.pdb
 ### 2. Análise de Estabilidade
 
 ```bash
-rosetta-scan pipeline protein.pdb
-    --chains A
-    --nstruct 35
+rosetta-scan pipeline protein.pdb --chains A --nstruct 35
 ```
 
 **Aplicação:** Protein engineering
@@ -347,8 +337,7 @@ rosetta-scan pipeline protein.pdb
 ### 3. Scanning de Região Específica
 
 ```bash
-rosetta-scan scan protein.pdb
-    --range "A:100-200"
+rosetta-scan scan protein.pdb --range "A:100-200"
 ```
 
 **Aplicação:** Análise de epitopo

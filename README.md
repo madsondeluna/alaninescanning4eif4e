@@ -61,11 +61,7 @@ ls examples/demo_output/
 Run the entire workflow with a single command:
 
 ```bash
-rosetta-scan pipeline protein.pdb
-    --chains A B
-    --interface-only
-    --nstruct 35
-    --output results/
+rosetta-scan pipeline protein.pdb --chains A B --interface-only --nstruct 35 --output results/
 ```
 
 This will:
@@ -79,28 +75,19 @@ This will:
 #### Generate Mutations
 
 ```bash
-rosetta-scan scan protein.pdb
-    --chains A B
-    --interface-only
-    --output mutations/
+rosetta-scan scan protein.pdb --chains A B --interface-only --output mutations/
 ```
 
 #### Run Flex ddG
 
 ```bash
-rosetta-scan run protein.pdb mutations/mutations.txt
-    --nstruct 35
-    --iterations 3
-    --output ddg_results/
+rosetta-scan run protein.pdb mutations/mutations.txt --nstruct 35 --iterations 3 --output ddg_results/
 ```
 
 #### Analyze Results
 
 ```bash
-rosetta-scan analyze ddg_results/
-    --plot
-    --threshold 1.5
-    --output analysis.csv
+rosetta-scan analyze ddg_results/ --plot --threshold 1.5 --output analysis.csv
 ```
 
 ## Detailed Usage
@@ -271,36 +258,23 @@ visualizer.create_dashboard("plots/", threshold=1.5)
 
 ```bash
 # Identify hotspots at protein-protein interface
-rosetta-scan pipeline complex.pdb
-    --chains A B
-    --interface-only
-    --interface-cutoff 8.0
-    --nstruct 35
-    --output interface_hotspots/
+rosetta-scan pipeline complex.pdb --chains A B --interface-only --interface-cutoff 8.0 --nstruct 35 --output interface_hotspots/
 ```
 
 ### Example 2: Folding Stability Analysis
 
 ```bash
 # Scan entire protein for folding stability
-rosetta-scan pipeline protein.pdb
-    --chains A
-    --nstruct 35
-    --output stability_analysis/
+rosetta-scan pipeline protein.pdb --chains A --nstruct 35 --output stability_analysis/
 ```
 
 ### Example 3: Custom Residue Range
 
 ```bash
 # Scan specific region
-rosetta-scan scan protein.pdb
-    -c A
-    -r "A:100-200"
-    --output region_scan/
+rosetta-scan scan protein.pdb -c A -r "A:100-200" --output region_scan/
 
-rosetta-scan run protein.pdb region_scan/mutations.txt
-    --nstruct 35
-    --output region_ddg/
+rosetta-scan run protein.pdb region_scan/mutations.txt --nstruct 35 --output region_ddg/
 ```
 
 ## Visualization Examples

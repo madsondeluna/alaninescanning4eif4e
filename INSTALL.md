@@ -264,8 +264,7 @@ arch -x86_64 ./scons.py -j4 mode=release bin
 ```bash
 # Install system dependencies
 sudo apt-get update
-sudo apt-get install -y python3 python3-pip python3-venv
-    build-essential zlib1g-dev
+sudo apt-get install -y python3 python3-pip python3-venv build-essential zlib1g-dev
 
 # For plotting
 sudo apt-get install -y python3-tk

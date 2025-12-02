@@ -160,10 +160,7 @@ cat examples/EXPECTED_OUTPUT.md
 
 ```bash
 # Substitua 'sua_proteina.pdb' pelo seu arquivo PDB
-rosetta-scan scan sua_proteina.pdb
-    --chains A B
-    --interface-only
-    --output meu_scan/
+rosetta-scan scan sua_proteina.pdb --chains A B --interface-only --output meu_scan/
 ```
 
 ### 3. Executar Pipeline Completo (Requer Rosetta)
@@ -173,11 +170,7 @@ rosetta-scan scan sua_proteina.pdb
 export ROSETTA=/caminho/para/rosetta
 
 # Execute pipeline completo
-rosetta-scan pipeline sua_proteina.pdb
-    --chains A B
-    --interface-only
-    --nstruct 35
-    --output meus_resultados/
+rosetta-scan pipeline sua_proteina.pdb --chains A B --interface-only --nstruct 35 --output meus_resultados/
 ```
 
 ## Troubleshooting
@@ -224,29 +217,21 @@ python3 examples/demo_run.py
 
 ```bash
 # Gerar mutações de uma estrutura
-rosetta-scan scan protein.pdb
-    --output mutacoes/
+rosetta-scan scan protein.pdb --output mutacoes/
 ```
 
 ### Exemplo 2: Apenas Interface
 
 ```bash
 # Identificar apenas resíduos de interface
-rosetta-scan scan complex.pdb
-    --chains A B
-    --interface-only
-    --interface-cutoff 8.0
-    --output interface/
+rosetta-scan scan complex.pdb --chains A B --interface-only --interface-cutoff 8.0 --output interface/
 ```
 
 ### Exemplo 3: Região Específica
 
 ```bash
 # Scan de região específica da sequência
-rosetta-scan scan protein.pdb
-    --chains A
-    --range "A:100-200"
-    --output regiao/
+rosetta-scan scan protein.pdb --chains A --range "A:100-200" --output regiao/
 ```
 
 ### Exemplo 4: Pipeline Completo (com Rosetta)
@@ -255,11 +240,7 @@ rosetta-scan scan protein.pdb
 # ATENÇÃO: Requer Rosetta instalado!
 export ROSETTA=/path/to/rosetta
 
-rosetta-scan pipeline protein.pdb
-    --chains A B
-    --interface-only
-    --nstruct 35
-    --output resultados_completos/
+rosetta-scan pipeline protein.pdb --chains A B --interface-only --nstruct 35 --output resultados_completos/
 ```
 
 ## Interpretando os Resultados
