@@ -92,7 +92,7 @@ cat examples/demo_output/analysis_report.txt
 
 ```bash
 # Scan de todas as cadeias
-rosetta-scan scan examples/example_protein.pdb \
+rosetta-scan scan examples/example_protein.pdb
     --output examples/scan_output/
 ```
 
@@ -119,10 +119,10 @@ Mutations saved to: examples/scan_output/mutations.txt
 
 ```bash
 # Identificar apenas resíduos de interface
-rosetta-scan scan examples/example_protein.pdb \
-    --chains A B \
-    --interface-only \
-    --interface-cutoff 8.0 \
+rosetta-scan scan examples/example_protein.pdb
+    --chains A B
+    --interface-only
+    --interface-cutoff 8.0
     --output examples/interface_scan/
 ```
 
@@ -399,23 +399,23 @@ ls $ROSETTA/main/source/bin/flex_ddg*
 
 ```bash
 # 1. Gere as mutações
-rosetta-scan scan examples/example_protein.pdb \
-    --chains A B \
-    --interface-only \
+rosetta-scan scan examples/example_protein.pdb
+    --chains A B
+    --interface-only
     --output real_run/
 
 # 2. Execute Flex ddG (isso vai demorar!)
-rosetta-scan run examples/example_protein.pdb \
-    real_run/mutations.txt \
-    --nstruct 35 \
-    --iterations 3 \
-    --interface \
+rosetta-scan run examples/example_protein.pdb
+    real_run/mutations.txt
+    --nstruct 35
+    --iterations 3
+    --interface
     --output real_run/ddg_results/
 
 # 3. Analise os resultados
-rosetta-scan analyze real_run/ddg_results/ \
-    --plot \
-    --threshold 1.5 \
+rosetta-scan analyze real_run/ddg_results/
+    --plot
+    --threshold 1.5
     --output real_run/analysis.csv
 ```
 
@@ -440,27 +440,27 @@ O comando `analyze --plot` gera automaticamente:
 ### Caso 1: Análise de Interface Proteína-Proteína
 
 ```bash
-rosetta-scan pipeline complex.pdb \
-    --chains A B \
-    --interface-only \
-    --nstruct 35 \
+rosetta-scan pipeline complex.pdb
+    --chains A B
+    --interface-only
+    --nstruct 35
     --output interface_analysis/
 ```
 
 ### Caso 2: Estabilidade de Dobramento
 
 ```bash
-rosetta-scan pipeline protein.pdb \
-    --chains A \
-    --nstruct 35 \
+rosetta-scan pipeline protein.pdb
+    --chains A
+    --nstruct 35
     --output stability_analysis/
 ```
 
 ### Caso 3: Região Específica
 
 ```bash
-rosetta-scan scan protein.pdb \
-    -r "A:100-150" \
+rosetta-scan scan protein.pdb
+    -r "A:100-150"
     --output region_scan/
 ```
 

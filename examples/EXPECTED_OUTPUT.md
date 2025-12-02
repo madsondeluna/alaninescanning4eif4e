@@ -32,10 +32,10 @@ $ rosetta-scan scan examples/example_protein.pdb --chains A B --output scan_outp
 ### Comando: `rosetta-scan scan --interface-only`
 
 ```bash
-$ rosetta-scan scan examples/example_protein.pdb \
-    --chains A B \
-    --interface-only \
-    --interface-cutoff 8.0 \
+$ rosetta-scan scan examples/example_protein.pdb
+    --chains A B
+    --interface-only
+    --interface-cutoff 8.0
     --output interface_scan/
 
  Alanine Scanning Mutation Generator

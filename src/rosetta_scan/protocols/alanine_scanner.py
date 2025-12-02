@@ -185,7 +185,7 @@ class AlanineScan:
         for chain in self.structure[0]:
             if chain.id in chains:
                 atoms = [atom for residue in chain for atom in residue
-                        if residue.id[0] == ' ']
+                         if residue.id[0] == ' ']
                 chain_atoms[chain.id] = atoms
 
         # Find interface residues
@@ -257,7 +257,7 @@ class AlanineScan:
             f.write("chain,position,original_aa,target_aa,mutation\n")
             for mut in self.mutation_sites:
                 f.write(f"{mut.chain},{mut.position},{mut.original_aa},"
-                       f"{mut.target_aa},{mut}\n")
+                        f"{mut.target_aa},{mut}\n")
 
     def _save_rosetta_format(self, output_path: Path):
         """Save Rosetta-compatible mutation file."""

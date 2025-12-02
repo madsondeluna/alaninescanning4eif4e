@@ -204,8 +204,8 @@ class ResultParser:
         if self.results_df is None:
             raise ValueError("No results loaded. Call parse_results() first.")
 
-        return self.results_df.nlargest(n, by) if not ascending else \
-               self.results_df.nsmallest(n, by)
+        return (self.results_df.nlargest(n, by) if not ascending else
+                self.results_df.nsmallest(n, by))
 
     def export_pymol_script(
         self,

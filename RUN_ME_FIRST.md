@@ -130,8 +130,8 @@ rosetta-scan --help
 rosetta-scan scan --help
 
 # Testar comando scan
-rosetta-scan scan examples/example_protein.pdb \
-    --chains A B \
+rosetta-scan scan examples/example_protein.pdb
+    --chains A B
     --output test_scan/
 
 # Ver resultados
@@ -160,9 +160,9 @@ cat examples/EXPECTED_OUTPUT.md
 
 ```bash
 # Substitua 'sua_proteina.pdb' pelo seu arquivo PDB
-rosetta-scan scan sua_proteina.pdb \
-    --chains A B \
-    --interface-only \
+rosetta-scan scan sua_proteina.pdb
+    --chains A B
+    --interface-only
     --output meu_scan/
 ```
 
@@ -173,10 +173,10 @@ rosetta-scan scan sua_proteina.pdb \
 export ROSETTA=/caminho/para/rosetta
 
 # Execute pipeline completo
-rosetta-scan pipeline sua_proteina.pdb \
-    --chains A B \
-    --interface-only \
-    --nstruct 35 \
+rosetta-scan pipeline sua_proteina.pdb
+    --chains A B
+    --interface-only
+    --nstruct 35
     --output meus_resultados/
 ```
 
@@ -224,7 +224,7 @@ python3 examples/demo_run.py
 
 ```bash
 # Gerar mutações de uma estrutura
-rosetta-scan scan protein.pdb \
+rosetta-scan scan protein.pdb
     --output mutacoes/
 ```
 
@@ -232,10 +232,10 @@ rosetta-scan scan protein.pdb \
 
 ```bash
 # Identificar apenas resíduos de interface
-rosetta-scan scan complex.pdb \
-    --chains A B \
-    --interface-only \
-    --interface-cutoff 8.0 \
+rosetta-scan scan complex.pdb
+    --chains A B
+    --interface-only
+    --interface-cutoff 8.0
     --output interface/
 ```
 
@@ -243,9 +243,9 @@ rosetta-scan scan complex.pdb \
 
 ```bash
 # Scan de região específica da sequência
-rosetta-scan scan protein.pdb \
-    --chains A \
-    --range "A:100-200" \
+rosetta-scan scan protein.pdb
+    --chains A
+    --range "A:100-200"
     --output regiao/
 ```
 
@@ -255,10 +255,10 @@ rosetta-scan scan protein.pdb \
 # ATENÇÃO: Requer Rosetta instalado!
 export ROSETTA=/path/to/rosetta
 
-rosetta-scan pipeline protein.pdb \
-    --chains A B \
-    --interface-only \
-    --nstruct 35 \
+rosetta-scan pipeline protein.pdb
+    --chains A B
+    --interface-only
+    --nstruct 35
     --output resultados_completos/
 ```
 
@@ -340,10 +340,10 @@ Marque conforme você completa:
 Se quiser fazer tudo de uma vez:
 
 ```bash
-cd /Users/madsonluna/Documents/alaninescanning4eif4e && \
-python3 -m venv venv && \
-source venv/bin/activate && \
-pip install -e . && \
+cd /Users/madsonluna/Documents/alaninescanning4eif4e &&
+python3 -m venv venv &&
+source venv/bin/activate &&
+pip install -e . &&
 python3 examples/demo_run.py
 ```
 

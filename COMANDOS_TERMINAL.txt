@@ -81,18 +81,18 @@ rosetta-scan --help
 rosetta-scan scan --help
 
 # Testar comando scan
-rosetta-scan scan examples/example_protein.pdb \
-    --chains A B \
+rosetta-scan scan examples/example_protein.pdb
+    --chains A B
     --output test_output/
 
 # Ver resultados
 cat test_output/mutations.txt
 
 # Testar scan de interface apenas
-rosetta-scan scan examples/example_protein.pdb \
-    --chains A B \
-    --interface-only \
-    --interface-cutoff 8.0 \
+rosetta-scan scan examples/example_protein.pdb
+    --chains A B
+    --interface-only
+    --interface-cutoff 8.0
     --output interface_test/
 
 cat interface_test/mutations.txt
@@ -111,22 +111,22 @@ USAR COM SUA PRÓPRIA ESTRUTURA PDB
 # Exemplo: minha_proteina.pdb
 
 # 2. Gerar mutações
-rosetta-scan scan minha_proteina.pdb \
-    --chains A \
+rosetta-scan scan minha_proteina.pdb
+    --chains A
     --output meus_resultados/
 
 # 3. Ver mutações geradas
 cat meus_resultados/mutations.txt
 
 # 4. Se tiver múltiplas cadeias
-rosetta-scan scan minha_proteina.pdb \
-    --chains A B C \
+rosetta-scan scan minha_proteina.pdb
+    --chains A B C
     --output meus_resultados_multi/
 
 # 5. Para analisar apenas interface
-rosetta-scan scan complexo.pdb \
-    --chains A B \
-    --interface-only \
+rosetta-scan scan complexo.pdb
+    --chains A B
+    --interface-only
     --output interface_analise/
 
 ================================================================================
@@ -140,30 +140,30 @@ PIPELINE COMPLETO COM ROSETTA (Requer Rosetta instalado)
 export ROSETTA=/path/to/your/rosetta
 
 # 2. Execute pipeline completo
-rosetta-scan pipeline minha_proteina.pdb \
-    --chains A B \
-    --interface-only \
-    --nstruct 35 \
+rosetta-scan pipeline minha_proteina.pdb
+    --chains A B
+    --interface-only
+    --nstruct 35
     --output resultados_rosetta/
 
 # 3. Ou execute passo a passo:
 
 # a) Gerar mutações
-rosetta-scan scan minha_proteina.pdb \
-    --chains A B \
+rosetta-scan scan minha_proteina.pdb
+    --chains A B
     --output passo1/
 
 # b) Executar Flex ddG
-rosetta-scan run minha_proteina.pdb \
-    passo1/mutations_rosetta.txt \
-    --nstruct 35 \
-    --iterations 3 \
+rosetta-scan run minha_proteina.pdb
+    passo1/mutations_rosetta.txt
+    --nstruct 35
+    --iterations 3
     --output passo2_ddg/
 
 # c) Analisar resultados
-rosetta-scan analyze passo2_ddg/ \
-    --plot \
-    --threshold 1.5 \
+rosetta-scan analyze passo2_ddg/
+    --plot
+    --threshold 1.5
     --output passo3_analise.csv
 
 ================================================================================
@@ -171,10 +171,10 @@ ATALHOS ÚTEIS
 ================================================================================
 
 # Setup rápido (faz tudo de uma vez)
-cd /Users/madsonluna/Documents/alaninescanning4eif4e && \
-python3 -m venv venv && \
-source venv/bin/activate && \
-pip install -e . && \
+cd /Users/madsonluna/Documents/alaninescanning4eif4e &&
+python3 -m venv venv &&
+source venv/bin/activate &&
+pip install -e . &&
 python3 examples/demo_run.py
 
 # Reativar ambiente (quando abrir novo terminal)
