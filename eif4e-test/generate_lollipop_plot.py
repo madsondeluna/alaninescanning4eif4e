@@ -40,8 +40,8 @@ axis_label_fontsize = 20
 tick_label_fontsize = 16
 
 # --- Y-Axis Limits ---
-y_axis_min = 0
-y_axis_max = 4
+y_axis_min = -4
+y_axis_max = 0
 
 # --- Color Scheme ---
 # Color based on ddG magnitude (higher = more critical)
@@ -70,7 +70,11 @@ def generate_lollipop_plot():
     # Sort by position
     df_sorted = df.sort_values(by='position').reset_index(drop=True)
 
-    # Define colors based on ddG magnitude
+    # Use ddg_normalized column if available, otherwise create it
+    if 'ddg_normalized' not in df_sorted.columns:
+        df_sorted['ddg_normalized'] = -df_sorted['ddg']
+
+    # Define colors based on ddG magnitude (using original positive values for thresholds)
     colors = []
     for ddg in df_sorted['ddg']:
         if ddg >= threshold_high:
@@ -101,10 +105,10 @@ def generate_lollipop_plot():
     # Set the figure size
     plt.figure(figsize=(figure_width, figure_height))
 
-    # Create the stems of the lollipop chart
+    # Create the stems of the lollipop chart (using normalized negative values)
     (markerline, stemlines, baseline) = plt.stem(
         df_sorted['position'],
-        df_sorted['ddg'],
+        df_sorted['ddg_normalized'],
         linefmt='grey',
         markerfmt='o',
         basefmt='black'
@@ -113,10 +117,10 @@ def generate_lollipop_plot():
     # Make default markers invisible
     plt.setp(markerline, 'markerfacecolor', 'none', 'markeredgecolor', 'none')
 
-    # Draw custom-colored markers
+    # Draw custom-colored markers (using normalized negative values)
     plt.scatter(
         df_sorted['position'],
-        df_sorted['ddg'],
+        df_sorted['ddg_normalized'],
         c=colors,
         s=marker_size,
         zorder=3,
@@ -138,16 +142,16 @@ def generate_lollipop_plot():
     plt.xticks(np.arange(0, max_pos + 1, 10), fontsize=tick_label_fontsize)
     plt.yticks(fontsize=tick_label_fontsize)
 
-    # Add horizontal lines for thresholds
-    plt.axhline(y=threshold_medium, color='orange', linestyle='--', alpha=0.3, linewidth=1)
-    plt.axhline(y=threshold_high, color='red', linestyle='--', alpha=0.3, linewidth=1)
+    # Add horizontal lines for thresholds (negative values)
+    plt.axhline(y=-threshold_medium, color='orange', linestyle='--', alpha=0.3, linewidth=1)
+    plt.axhline(y=-threshold_high, color='red', linestyle='--', alpha=0.3, linewidth=1)
 
     # Add legend
     from matplotlib.patches import Patch
     legend_elements = [
-        Patch(facecolor=color_high, edgecolor='black', label=f'High impact (ΔΔG ≥ {threshold_high})'),
-        Patch(facecolor=color_medium, edgecolor='black', label=f'Medium impact ({threshold_medium} ≤ ΔΔG < {threshold_high})'),
-        Patch(facecolor=color_low, edgecolor='black', label=f'Low impact (ΔΔG < {threshold_medium})')
+        Patch(facecolor=color_high, edgecolor='black', label=f'High impact (ΔΔG ≤ -{threshold_high})'),
+        Patch(facecolor=color_medium, edgecolor='black', label=f'Medium impact (-{threshold_high} < ΔΔG ≤ -{threshold_medium})'),
+        Patch(facecolor=color_low, edgecolor='black', label=f'Low impact (ΔΔG > -{threshold_medium})')
     ]
     plt.legend(handles=legend_elements, loc='upper right', fontsize=14, framealpha=0.9)
 

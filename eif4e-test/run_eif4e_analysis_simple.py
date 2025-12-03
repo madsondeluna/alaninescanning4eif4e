@@ -79,6 +79,7 @@ def simulate_ddg(mutations):
             'position': mut['position'],
             'original_aa': mut['original_aa'],
             'ddg': ddg,
+            'ddg_normalized': -ddg,  # Normalized (negative) values
             'total_score': total_score
         })
 
