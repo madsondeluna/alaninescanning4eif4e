@@ -43,6 +43,10 @@ mutations/
 # OS
 .DS_Store
 Thumbs.db
+._*
+
+# Claude Code
+.claude/
 
 # Data
 *.pdb

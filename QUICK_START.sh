@@ -29,7 +29,7 @@ echo ""
 
 if [ ! -f "setup.py" ]; then
     echo "Erro: Execute este script no diretório raiz do projeto"
-    echo "   cd /Users/madsonluna/Documents/alaninescanning4eif4e"
+    echo "   cd /Volumes/promethion/alaninescanning4eif4e"
     exit 1
 fi
 

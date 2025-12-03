@@ -44,10 +44,7 @@ echo ""
 
 # Step 1: Generate mutations
 echo "[1/3] Generating mutations..."
-rosetta-scan scan protein.pdb \
-    -c A \
-    --output "$TEST_DIR/mutations" \
-    --format rosetta
+rosetta-scan scan protein.pdb -c A --output "$TEST_DIR/mutations" --format rosetta
 
 if [[ $? -ne 0 ]]; then
     echo " Mutation generation failed"
@@ -78,11 +75,7 @@ echo "======================================================================"
 echo ""
 echo "To run a full analysis:"
 echo ""
-echo "  rosetta-scan pipeline protein.pdb \\"
-echo "    --chains A B \\"
-echo "    --interface-only \\"
-echo "    --nstruct 35 \\"
-echo "    --output results/"
+echo "  rosetta-scan pipeline protein.pdb --chains A B --interface-only --nstruct 35 --output results/"
 echo ""
 echo "Test files created in: $TEST_DIR/"
 echo ""

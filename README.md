@@ -1,327 +1,287 @@
-# Rosetta Alanine Scanning - Flex ddG Protocol
+# Alanine Scanning com PyRosetta - Protocolo Flex ddG
 
-A Python framework for computational alanine scanning and hotspot identification using Rosetta's Flex ddG protocol.
+Framework Python para análise computacional de alanine scanning usando PyRosetta e o protocolo Flex ddG.
 
-## Features
+## Descrição
 
-- **Automated Alanine Scanning**: Generate systematic alanine mutations from PDB structures
-- **Flex ddG Protocol**: Run Rosetta's state-of-the-art Flex ddG calculations
-- **Interface Analysis**: Identify interface residues and hotspots in protein-protein interactions
-- **Visualizations**: Generate publication-quality plots and heatmaps
-- **CLI Interface**: Intuitive command-line interface with progress tracking
-- **Complete Pipeline**: End-to-end workflow from structure to results
+Este framework implementa o protocolo Flex ddG para calcular mudanças na energia livre (ΔΔG) ao introduzir mutações pontuais para alanina em proteínas. O método considera flexibilidade conformacional da cadeia principal através de movimentos backrub, proporcionando estimativas mais acuradas que métodos de estrutura fixa.
 
-## Installation
+## Fundamentos Teóricos
 
-### Prerequisites
+### Função de Energia REF2015
 
-1. **Rosetta Software Suite** (required)
-   - Download from: https://www.rosettacommons.org/software/license-and-download
-   - Compile with `flex_ddg` application
-   - Set `ROSETTA` environment variable:
-     ```bash
-     export ROSETTA=/path/to/rosetta
-     ```
+O Rosetta utiliza a função de energia REF2015 (Alford et al., 2017), que combina termos físicos e estatísticos:
 
-2. **Python 3.8+**
+```
+E_total = Σ w_i × E_i
+```
 
-### Install Package
+**Componentes principais:**
+
+1. `fa_atr` - van der Waals atrativo (Lennard-Jones)
+   - Peso: ~1.0
+   - Captura interações hidrofóbicas e empacotamento
+
+2. `fa_rep` - van der Waals repulsivo
+   - Peso: ~0.55
+   - Previne overlaps estéricos
+
+3. `fa_sol` - Solvatação (modelo Lazaridis-Karplus)
+   - Peso: ~1.0
+   - Efeito hidrofóbico e dessolvatação polar
+
+4. `fa_elec` - Eletrostático (coulômbico)
+   - Peso: ~1.0
+   - Interações carga-carga, pontes salinas
+
+5. `hbond_sc/hbond_bb` - Ligações de hidrogênio
+   - Peso: ~1.0-1.5
+   - Termos direcionais para cadeia lateral e principal
+
+6. Termos entrópicos:
+   - `pro_close`: Fechamento de prolina
+   - `dslf_fa53`: Pontes dissulfeto
+   - `rama_prepro`: Mapa de Ramachandran
+
+**Unidade de energia:**
+- Rosetta Energy Units (REU)
+- Aproximadamente 1 REU ≈ 1 kcal/mol (métrica relativa)
+
+### Protocolo Flex ddG
+
+O protocolo Flex ddG (Barlow et al., 2018) é um método ensemble-based para calcular ΔΔG:
+
+**Workflow:**
+
+1. **Minimização da estrutura wild-type**
+   - Relaxamento com packing e minimização
+   - Gera estrutura de referência otimizada
+
+2. **Backrub ensemble generation**
+   - Aplica movimentos "backrub" na cadeia principal
+   - Simula flexibilidade local em torno da mutação
+   - Gera diversidade conformacional realista
+
+3. **Mutação e repacking**
+   - Introduz mutação (ex: Trp → Ala)
+   - Reempacota cadeias laterais na vizinhança (raio ~8 Å)
+
+4. **Cálculo de ΔΔG**
+   ```
+   ΔΔG = E_mutante - E_wild-type
+   ```
+   - ΔΔG > 0: Mutação desestabiliza (hotspot)
+   - ΔΔG < 0: Mutação estabiliza
+   - ΔΔG ≈ 0: Mutação neutra
+
+5. **Estatística sobre ensemble**
+   - Calcula média e desvio padrão sobre n estruturas
+   - Erro típico: ±0.5-1.0 kcal/mol
+
+### Critério de Hotspots (±2 REU)
+
+O critério **ΔΔG > +2.0 kcal/mol** para definir hotspots vem de estudos experimentais e computacionais:
+
+**Justificativa experimental:**
+- ΔΔG = +2.0 kcal/mol corresponde a redução de ~30x na afinidade a 25°C:
+  ```
+  K_d,mut / K_d,wt = exp(ΔΔG / RT) = exp(2.0 / 0.592) ≈ 30
+  ```
+- Efeito biologicamente significativo
+- Consenso na literatura (Clackson & Wells, 1995; Kortemme & Baker, 2002)
+
+**Justificativa computacional:**
+- Erro médio do Flex ddG: ~1.0-1.3 kcal/mol (RMSE)
+- ΔΔG > 2.0 kcal/mol está acima do ruído computacional
+- Correlação experimental: r = 0.69 (Barlow et al., 2018)
+
+**Interpretação:**
+- **ΔΔG > +2.0 kcal/mol**: Hotspot confirmado (alta confiança)
+- **ΔΔG = +1.0 a +2.0 kcal/mol**: Contribuição moderada
+- **ΔΔG < +1.0 kcal/mol**: Contribuição fraca ou neutra
+
+## Instalação
+
+### Requisitos
+
+- Python 3.8+
+- PyRosetta (instalado via conda ou pip)
+
+### Passo 1: Criar ambiente conda
 
 ```bash
-# Clone repository
-git clone https://github.com/yourusername/alaninescanning4eif4e.git
+conda create -n pyrosetta python=3.10
+conda activate pyrosetta
+```
+
+### Passo 2: Instalar PyRosetta
+
+```bash
+# Via conda (recomendado)
+conda install -c conda-forge pyrosetta
+
+# OU via pip (requer licença acadêmica)
+pip install pyrosetta-installer
+python -c "import pyrosetta_installer; pyrosetta_installer.install_pyrosetta()"
+```
+
+### Passo 3: Instalar framework
+
+```bash
+git clone https://github.com/madsondeluna/alaninescanning4eif4e.git
 cd alaninescanning4eif4e
-
-# Create virtual environment (recommended)
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install package and dependencies
 pip install -e .
 ```
 
-## Quick Demo
-
-Try the complete workflow with example data (no Rosetta required):
-
-```bash
-# Run the interactive demo
-python3 examples/demo_run.py
-
-# View the generated outputs
-ls examples/demo_output/
-```
-
-**[See detailed demo guide](DEMO.md)** with step-by-step instructions and expected outputs.
-
-## Quick Start
-
-### 1. Complete Pipeline (Recommended)
-
-Run the entire workflow with a single command:
-
-```bash
-rosetta-scan pipeline protein.pdb --chains A B --interface-only --nstruct 35 --output results/
-```
-
-This will:
-1. Generate alanine mutations
-2. Run Flex ddG calculations
-3. Analyze results and identify hotspots
-4. Create visualizations
-
-### 2. Step-by-Step Workflow
-
-#### Generate Mutations
-
-```bash
-rosetta-scan scan protein.pdb --chains A B --interface-only --output mutations/
-```
-
-#### Run Flex ddG
-
-```bash
-rosetta-scan run protein.pdb mutations/mutations.txt --nstruct 35 --iterations 3 --output ddg_results/
-```
-
-#### Analyze Results
-
-```bash
-rosetta-scan analyze ddg_results/ --plot --threshold 1.5 --output analysis.csv
-```
-
-## Detailed Usage
-
-### Mutation Generation
-
-```bash
-rosetta-scan scan protein.pdb [OPTIONS]
-
-Options:
-  -c, --chains TEXT              Chain IDs to scan (e.g., -c A -c B)
-  -r, --range TEXT               Residue range (e.g., "A:1-100,B:50-150")
-  --interface-only               Only scan interface residues
-  --interface-cutoff FLOAT       Distance cutoff for interface (default: 8.0 Å)
-  -o, --output PATH              Output directory
-  --format [txt|csv|rosetta]     Output format
-```
-
-**Examples:**
-
-```bash
-# Scan specific chains
-rosetta-scan scan protein.pdb -c A -c B
-
-# Scan interface residues only
-rosetta-scan scan protein.pdb --interface-only
-
-# Scan specific residue range
-rosetta-scan scan protein.pdb -r "A:1-100,B:50-150"
-```
-
-### Flex ddG Protocol
-
-```bash
-rosetta-scan run pdb_file mutation_file [OPTIONS]
-
-Options:
-  --config PATH              YAML configuration file
-  --nstruct INTEGER          Number of structures per mutation (default: 35)
-  --iterations INTEGER       Backrub iterations (default: 3)
-  --interface                Enable interface ddG mode
-  -o, --output PATH          Output directory
-  --rosetta-path PATH        Path to Rosetta installation
-```
-
-**Examples:**
-
-```bash
-# Production run
-rosetta-scan run protein.pdb mutations.txt --nstruct 35
-
-# Interface ddG
-rosetta-scan run complex.pdb mutations.txt --interface --nstruct 35
-
-# Use configuration file
-rosetta-scan run protein.pdb mutations.txt --config config.yaml
-```
-
-### Result Analysis
-
-```bash
-rosetta-scan analyze results_dir [OPTIONS]
-
-Options:
-  -o, --output PATH          Output file (CSV/JSON)
-  --plot                     Generate visualizations
-  --threshold FLOAT          Hotspot threshold (kcal/mol, default: 1.0)
-```
-
-**Examples:**
-
-```bash
-# Basic analysis
-rosetta-scan analyze ddg_results/
-
-# Generate plots and export results
-rosetta-scan analyze ddg_results/ --plot --output results.csv
-
-# Custom hotspot threshold
-rosetta-scan analyze ddg_results/ --threshold 2.0 --plot
-```
-
-## Configuration
-
-Generate example configuration:
-
-```bash
-rosetta-scan init-config -o my_config.yaml
-```
-
-Edit `my_config.yaml`:
-
-```yaml
-# Protocol parameters
-nstruct: 35          # Structures per mutation
-iterations: 3        # Backrub iterations
-repack_radius: 8.0   # Repacking shell (Å)
-
-# Options
-use_backrub: true
-interface_ddg: false
-
-# Resources
-num_processors: 4
-memory_gb: 8
-
-# Rosetta paths
-rosetta_path: /path/to/rosetta
-rosetta_database: /path/to/rosetta/main/database
-```
-
-## Output Files
-
-```
-results/
---- mutations.txt             # Rosetta mutation file
---- ddg_results/              # Flex ddG output
-|   --- score.sc              # Score file
-|   --- rosetta.log           # Rosetta log
---- results.csv               # Parsed results
---- analysis_report.txt       # Summary report
---- plots/                    # Visualizations
-    --- ddg_distribution.png
-    --- hotspot_heatmap.png
-    --- chain_analysis.png
-    --- top_hotspots.png
-```
-
-## Python API
-
-Use the package programmatically:
+### Testar instalação
 
 ```python
-from rosetta_scan.protocols.flex_ddg import FlexDdGProtocol, FlexDdGConfig
-from rosetta_scan.protocols.alanine_scanner import AlanineScan
-from rosetta_scan.analysis.parser import ResultParser
-from rosetta_scan.analysis.visualizer import ResultVisualizer
+import pyrosetta
+pyrosetta.init()
+print("PyRosetta instalado corretamente")
+```
 
-# Generate mutations
-scanner = AlanineScan("protein.pdb")
-mutations = scanner.generate_mutations(
-    chains=['A', 'B'],
-    interface_only=True
+## Uso
+
+### Análise completa do eIF4E
+
+```bash
+cd eif4e-test
+python run_analysis.py
+```
+
+Este script:
+1. Carrega a estrutura PDB
+2. Identifica todos os resíduos mutáveis
+3. Executa Flex ddG para todas as mutações
+4. Identifica hotspots (ΔΔG > +2.0 kcal/mol)
+5. Gera relatórios e visualizações
+
+### Uso programático
+
+```python
+from rosetta_scan.protocols.flex_ddg_pyrosetta import (
+    FlexDdGPyRosetta,
+    FlexDdGConfig
 )
 
-# Run Flex ddG
-config = FlexDdGConfig(nstruct=35, interface_ddg=True)
-protocol = FlexDdGProtocol(config)
-protocol.run_flex_ddg(
-    pdb_path="protein.pdb",
-    mutations=scanner.get_rosetta_mutation_list(),
-    output_dir="results/"
+# Configurar protocolo
+config = FlexDdGConfig(
+    nstruct=35,      # Número de estruturas no ensemble
+    iterations=3,     # Iterações backrub
+    temperature=0.6,  # Temperatura Monte Carlo
+    repack_radius=8.0 # Raio de repacking (Å)
 )
 
-# Analyze results
-parser = ResultParser("results/")
-results_df = parser.parse_results()
-hotspots = parser.identify_hotspots(threshold=1.5)
+protocol = FlexDdGPyRosetta(config)
 
-# Visualize
-visualizer = ResultVisualizer(results_df)
-visualizer.create_dashboard("plots/", threshold=1.5)
+# Definir mutações
+mutations = [
+    {'mutation': 'W39A', 'position': 39, 'original_aa': 'W'},
+    {'mutation': 'Y22A', 'position': 22, 'original_aa': 'Y'},
+]
+
+# Executar
+results = protocol.run_flex_ddg(
+    'protein.pdb',
+    mutations,
+    output_dir='results'
+)
+
+# Identificar hotspots
+hotspots = results[results['ddg'] > 2.0]
+print(hotspots)
 ```
 
-## Examples
+## Parâmetros do Protocolo
 
-### Example 1: Protein-Protein Interface Hotspots
+### `nstruct` (padrão: 35)
+Número de estruturas no ensemble por mutação.
 
-```bash
-# Identify hotspots at protein-protein interface
-rosetta-scan pipeline complex.pdb --chains A B --interface-only --interface-cutoff 8.0 --nstruct 35 --output interface_hotspots/
+- **Aumentar (50-100)**: Maior precisão estatística, menor desvio padrão, mas tempo aumenta linearmente
+- **Diminuir (10-20)**: Teste rápido, menor confiabilidade
+- **Recomendado**: 35 (padrão do paper original)
+
+### `iterations` (padrão: 3)
+Número de iterações do movimento backrub.
+
+- **Aumentar (5-10)**: Maior exploração conformacional, melhor modelagem de flexibilidade, mas muito mais lento
+- **Diminuir (1-2)**: Mais rápido, menor flexibilidade, pode perder efeitos alostéricos
+- **Recomendado**: 3 (balanço entre precisão e custo)
+
+### `temperature` (padrão: 0.6 K)
+Temperatura para aceitação Monte Carlo dos movimentos backrub.
+
+### `repack_radius` (padrão: 8.0 Å)
+Raio ao redor da mutação para reempacotamento de cadeias laterais.
+
+## Tempo de Execução
+
+Para 132 mutações (caso eIF4E):
+
+- **Teste (nstruct=5)**: ~10-20 minutos
+- **Padrão (nstruct=35)**: ~2-4 horas
+- **Alta precisão (nstruct=100)**: ~6-10 horas
+
+Tempo por mutação: ~1-2 minutos com nstruct=35
+
+## Estrutura do Projeto
+
+```
+alaninescanning4eif4e/
+├── README.md                      # Este arquivo
+├── requirements.txt               # Dependências Python
+├── setup.py                       # Instalação do pacote
+│
+├── src/
+│   └── rosetta_scan/
+│       ├── protocols/
+│       │   └── flex_ddg_pyrosetta.py  # Implementação Flex ddG
+│       └── analysis/
+│           ├── parser.py          # Parser de resultados
+│           └── visualizer.py      # Visualizações
+│
+└── eif4e-test/
+    ├── README.md                  # Documentação do exemplo
+    ├── model.pdb                  # Estrutura eIF4E
+    ├── run_analysis.py            # Script principal
+    └── analysis_results/          # Resultados gerados
 ```
 
-### Example 2: Folding Stability Analysis
+## Exemplo: eIF4E
 
-```bash
-# Scan entire protein for folding stability
-rosetta-scan pipeline protein.pdb --chains A --nstruct 35 --output stability_analysis/
-```
+O diretório `eif4e-test/` contém análise completa da proteína eIF4E (Eukaryotic translation initiation factor 4E).
 
-### Example 3: Custom Residue Range
+**Principais descobertas:**
+- 132 mutações para alanina
+- ~28 hotspots identificados (ΔΔG > +2.0 kcal/mol)
+- Cluster aromático crítico (resíduos 38-42) para ligação ao cap m7G
+- Interface C-terminal para interação com eIF4G
 
-```bash
-# Scan specific region
-rosetta-scan scan protein.pdb -c A -r "A:100-200" --output region_scan/
+Ver `eif4e-test/README.md` para detalhes.
 
-rosetta-scan run protein.pdb region_scan/mutations.txt --nstruct 35 --output region_ddg/
-```
+## Referências
 
-## Visualization Examples
-
-The analysis generates several types of plots:
-
-1. **ΔΔG Distribution**: Histogram of all ΔΔG values
-2. **Hotspot Heatmap**: Position-based heatmap of mutations
-3. **Chain Analysis**: Box/violin plots per chain
-4. **Top Hotspots**: Bar chart of strongest hotspots
-5. **Position Scan**: ΔΔG along sequence
-
-## Citation
-
-If you use this tool, please cite:
-
-**Flex ddG Protocol:**
+**Protocolo Flex ddG:**
 > Barlow KA, et al. (2018) Flex ddG: Rosetta Ensemble-Based Estimation of Changes in Protein-Protein Binding Affinity upon Mutation. J Phys Chem B. 122(21):5389-5399.
 
-**Rosetta:**
+**Função de energia REF2015:**
 > Alford RF, et al. (2017) The Rosetta All-Atom Energy Function for Macromolecular Modeling and Design. J Chem Theory Comput. 13(6):3031-3048.
 
-## Contributing
+**Hotspots em alanine scanning:**
+> Clackson T, Wells JA. (1995) A hot spot of binding energy in a hormone-receptor interface. Science. 267(5196):383-6.
 
-Contributions are welcome! Please feel free to submit issues or pull requests.
-
-## License
-
-This project is licensed under the MIT License - see [LICENSE](LICENSE) file.
-
-## Acknowledgments
-
-- Rosetta Commons for the Rosetta software suite
-- Barlow et al. for the Flex ddG protocol
-
-## Support
-
-For questions or issues:
-- Open an issue on GitHub
-- Email: madsondeluna@gmail.com
-
-## Resources
-
+**Recursos:**
 - [Rosetta Commons](https://www.rosettacommons.org/)
-- [Flex ddG Documentation](https://www.rosettacommons.org/docs/latest/application_documentation/analysis/ddg-monomer)
-- [PyRosetta](http://www.pyrosetta.org/)
+- [PyRosetta Tutorials](http://www.pyrosetta.org/tutorials)
+- [Flex ddG Documentation](https://www.rosettacommons.org/docs/latest/application_documentation/analysis/flex-ddg)
 
----
+## Licença
 
-Made with  for computational protein engineering
+MIT License
+
+## Contato
+
+Madson Luna - madsondeluna@gmail.com
+
+GitHub: https://github.com/madsondeluna/alaninescanning4eif4e
