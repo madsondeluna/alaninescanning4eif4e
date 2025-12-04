@@ -8,7 +8,7 @@
 # Uso: bash setup_x86_pyrosetta.sh
 ################################################################################
 
-set -e  # Exit on error
+set -e # Exit on error
 
 echo "================================================================================"
 echo "Setup x86 PyRosetta para M1/M2 Mac"
@@ -39,7 +39,7 @@ if [[ "$ARCH" != "arm64" ]]; then
     fi
 fi
 
-echo -e "${GREEN}✓${NC} Sistema: macOS ARM64 (M1/M2)"
+echo -e "${GREEN}${NC} Sistema: macOS ARM64 (M1/M2)"
 echo ""
 
 # Passo 1: Verificar/Instalar Rosetta 2
@@ -48,15 +48,15 @@ Passo 1/5: Verificar Rosetta 2
 ================================================================================"
 
 if /usr/bin/pgrep -q oahd; then
-    echo -e "${GREEN}✓${NC} Rosetta 2 já instalado"
+    echo -e "${GREEN}${NC} Rosetta 2 já instalado"
 else
     echo -e "${YELLOW}!${NC} Instalando Rosetta 2..."
     /usr/sbin/softwareupdate --install-rosetta --agree-to-license
 
     if [ $? -eq 0 ]; then
-        echo -e "${GREEN}✓${NC} Rosetta 2 instalado com sucesso"
+        echo -e "${GREEN}${NC} Rosetta 2 instalado com sucesso"
     else
-        echo -e "${RED}✗${NC} Falha ao instalar Rosetta 2"
+        echo -e "${RED}${NC} Falha ao instalar Rosetta 2"
         exit 1
     fi
 fi
@@ -69,12 +69,12 @@ echo "==========================================================================
 
 if command -v conda &> /dev/null; then
     CONDA_PATH=$(which conda)
-    echo -e "${GREEN}✓${NC} Conda encontrado: $CONDA_PATH"
+    echo -e "${GREEN}${NC} Conda encontrado: $CONDA_PATH"
 else
-    echo -e "${RED}✗${NC} Conda não encontrado"
+    echo -e "${RED}${NC} Conda não encontrado"
     echo ""
     echo "Por favor, instale Miniconda ou Anaconda primeiro:"
-    echo "  https://docs.conda.io/en/latest/miniconda.html"
+    echo " https://docs.conda.io/en/latest/miniconda.html"
     exit 1
 fi
 
@@ -113,9 +113,9 @@ if ! conda env list | grep -q "^$ENV_NAME "; then
     CONDA_SUBDIR=osx-64 conda create -n $ENV_NAME python=3.10 -y
 
     if [ $? -eq 0 ]; then
-        echo -e "${GREEN}✓${NC} Ambiente criado com sucesso"
+        echo -e "${GREEN}${NC} Ambiente criado com sucesso"
     else
-        echo -e "${RED}✗${NC} Falha ao criar ambiente"
+        echo -e "${RED}${NC} Falha ao criar ambiente"
         exit 1
     fi
 fi
@@ -126,7 +126,7 @@ conda activate $ENV_NAME
 # Configurar para sempre usar x86
 conda config --env --set subdir osx-64
 
-echo -e "${GREEN}✓${NC} Ambiente x86 configurado"
+echo -e "${GREEN}${NC} Ambiente x86 configurado"
 echo ""
 
 # Passo 4: Instalar PyRosetta
@@ -136,9 +136,9 @@ echo "==========================================================================
 
 # Verificar se PyRosetta já está instalado
 if python -c "import pyrosetta" 2>/dev/null; then
-    echo -e "${GREEN}✓${NC} PyRosetta já instalado"
+    echo -e "${GREEN}${NC} PyRosetta já instalado"
     PYROSETTA_VERSION=$(python -c "import pyrosetta; print(pyrosetta.version())" 2>/dev/null || echo "unknown")
-    echo "   Versão: $PYROSETTA_VERSION"
+    echo " Versão: $PYROSETTA_VERSION"
 else
     echo "Instalando PyRosetta x86..."
     echo "Isso pode demorar alguns minutos..."
@@ -153,13 +153,13 @@ else
 
     # Verificar instalação
     if python -c "import pyrosetta" 2>/dev/null; then
-        echo -e "${GREEN}✓${NC} PyRosetta instalado com sucesso"
+        echo -e "${GREEN}${NC} PyRosetta instalado com sucesso"
     else
-        echo -e "${RED}✗${NC} Falha ao instalar PyRosetta"
+        echo -e "${RED}${NC} Falha ao instalar PyRosetta"
         echo ""
         echo "Tente instalar manualmente:"
-        echo "  conda activate $ENV_NAME"
-        echo "  conda install -c https://conda.graylab.jhu.edu pyrosetta"
+        echo " conda activate $ENV_NAME"
+        echo " conda install -c https://conda.graylab.jhu.edu pyrosetta"
         exit 1
     fi
 fi
@@ -174,7 +174,7 @@ echo "Instalando pandas, numpy, matplotlib, seaborn, biopython..."
 pip install pandas numpy matplotlib seaborn biopython -q
 
 if [ $? -eq 0 ]; then
-    echo -e "${GREEN}✓${NC} Dependências instaladas"
+    echo -e "${GREEN}${NC} Dependências instaladas"
 else
     echo -e "${YELLOW}!${NC} Algumas dependências falharam (não crítico)"
 fi
@@ -188,18 +188,18 @@ echo "==========================================================================
 echo -n "Arquitetura Python: "
 PYTHON_ARCH=$(python -c "import platform; print(platform.machine())")
 if [ "$PYTHON_ARCH" == "x86_64" ]; then
-    echo -e "${GREEN}$PYTHON_ARCH ✓${NC}"
+    echo -e "${GREEN}$PYTHON_ARCH ${NC}"
 else
-    echo -e "${RED}$PYTHON_ARCH ✗${NC}"
+    echo -e "${RED}$PYTHON_ARCH ${NC}"
     echo -e "${RED}ERRO: Python não está rodando em x86_64!${NC}"
     exit 1
 fi
 
 echo -n "PyRosetta importável: "
 if python -c "import pyrosetta" 2>/dev/null; then
-    echo -e "${GREEN}SIM ✓${NC}"
+    echo -e "${GREEN}SIM ${NC}"
 else
-    echo -e "${RED}NÃO ✗${NC}"
+    echo -e "${RED}NÃO ${NC}"
     exit 1
 fi
 
@@ -210,9 +210,9 @@ echo "$PYROSETTA_VERSION"
 echo ""
 echo -n "Teste de inicialização: "
 if python -c "import pyrosetta; pyrosetta.init('-mute all')" 2>/dev/null; then
-    echo -e "${GREEN}OK ✓${NC}"
+    echo -e "${GREEN}OK ${NC}"
 else
-    echo -e "${RED}FALHOU ✗${NC}"
+    echo -e "${RED}FALHOU ${NC}"
     exit 1
 fi
 
@@ -223,24 +223,24 @@ echo "==========================================================================
 echo ""
 echo "Para usar PyRosetta x86, sempre ative o ambiente primeiro:"
 echo ""
-echo "  ${GREEN}conda activate $ENV_NAME${NC}"
+echo " ${GREEN}conda activate $ENV_NAME${NC}"
 echo ""
 echo "Aliases úteis (adicione ao ~/.zshrc):"
 echo ""
-echo "  alias pyrosetta='conda activate pyrosetta_x86'"
-echo "  alias eif4e='cd $(pwd)/eif4e-test && conda activate pyrosetta_x86'"
+echo " alias pyrosetta='conda activate pyrosetta_x86'"
+echo " alias eif4e='cd $(pwd)/eif4e-test && conda activate pyrosetta_x86'"
 echo ""
 echo "Próximos passos:"
 echo ""
-echo "  1. Ativar ambiente:"
-echo "     ${GREEN}conda activate $ENV_NAME${NC}"
+echo " 1. Ativar ambiente:"
+echo " ${GREEN}conda activate $ENV_NAME${NC}"
 echo ""
-echo "  2. Testar com gamma.pdb:"
-echo "     ${GREEN}cd $(pwd)/eif4e-test${NC}"
-echo "     ${GREEN}python test_gamma.py${NC}"
+echo " 2. Testar com gamma.pdb:"
+echo " ${GREEN}cd $(pwd)/eif4e-test${NC}"
+echo " ${GREEN}python test_gamma.py${NC}"
 echo ""
-echo "  3. Rodar análise completa:"
-echo "     ${GREEN}python run_analysis_high_accuracy.py${NC}"
+echo " 3. Rodar análise completa:"
+echo " ${GREEN}python run_analysis_high_accuracy.py${NC}"
 echo ""
 echo "================================================================================"
 echo ""
@@ -260,39 +260,39 @@ print("=" * 80)
 arch = platform.machine()
 print(f"Arquitetura Python: {arch}")
 if arch != "x86_64":
-    print("❌ ERRO: Não está em x86_64!")
+    print(" ERRO: Não está em x86_64!")
     sys.exit(1)
-print("✅ Arquitetura correta")
+print(" Arquitetura correta")
 
 # Importar PyRosetta
 try:
     import pyrosetta
-    print("✅ PyRosetta importado")
+    print(" PyRosetta importado")
 except ImportError as e:
-    print(f"❌ ERRO ao importar PyRosetta: {e}")
+    print(f" ERRO ao importar PyRosetta: {e}")
     sys.exit(1)
 
 # Versão
 try:
     version = pyrosetta.version()
-    print(f"✅ Versão: {version}")
+    print(f" Versão: {version}")
 except Exception as e:
-    print(f"⚠️  Não foi possível obter versão: {e}")
+    print(f" Não foi possível obter versão: {e}")
 
 # Inicializar
 try:
     pyrosetta.init("-ignore_unrecognized_res -mute all")
-    print("✅ PyRosetta inicializado")
+    print(" PyRosetta inicializado")
 except Exception as e:
-    print(f"❌ ERRO ao inicializar: {e}")
+    print(f" ERRO ao inicializar: {e}")
     sys.exit(1)
 
 # Criar pose simples
 try:
     pose = pyrosetta.pose_from_sequence("AAAAAA")
-    print(f"✅ Pose criada: {pose.total_residue()} residues")
+    print(f" Pose criada: {pose.total_residue()} residues")
 except Exception as e:
-    print(f"❌ ERRO ao criar pose: {e}")
+    print(f" ERRO ao criar pose: {e}")
     sys.exit(1)
 
 # Testar mutação (crítico!)
@@ -300,13 +300,13 @@ try:
     from pyrosetta.rosetta.protocols.simple_moves import MutateResidue
     mutate = MutateResidue(target=3, new_res='W')
     mutate.apply(pose)
-    print(f"✅ Mutação aplicada: {pose.residue(3).name()}")
+    print(f" Mutação aplicada: {pose.residue(3).name()}")
 except Exception as e:
-    print(f"❌ ERRO ao mutar: {e}")
+    print(f" ERRO ao mutar: {e}")
     sys.exit(1)
 
 print("=" * 80)
-print("✅ TODOS OS TESTES PASSARAM!")
+print(" TODOS OS TESTES PASSARAM!")
 print("=" * 80)
 print("\nPyRosetta x86 está funcionando corretamente via Rosetta 2.")
 print("Agora você pode rodar suas análises de alanine scanning.")
@@ -323,12 +323,12 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
 
     if [ $? -eq 0 ]; then
         echo ""
-        echo -e "${GREEN}✓ Teste completo passou!${NC}"
+        echo -e "${GREEN} Teste completo passou!${NC}"
         echo ""
         echo "PyRosetta x86 está pronto para uso!"
     else
         echo ""
-        echo -e "${RED}✗ Teste falhou${NC}"
+        echo -e "${RED} Teste falhou${NC}"
         echo "Verifique os erros acima"
     fi
 fi

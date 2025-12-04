@@ -4,7 +4,7 @@
 
 O PyRosetta nativo ARM (M1/M2) tem bug crítico de segmentation fault em `MutateResidue`, `PackRotamersMover`, `MinMover` e `FastRelax`. **Impossível fazer alanine scanning com build ARM atual.**
 
-## 🏆 SOLUÇÃO RECOMENDADA: x86 PyRosetta via Rosetta 2
+## SOLUÇÃO RECOMENDADA: x86 PyRosetta via Rosetta 2
 
 **Por quê:** Setup rápido, mantém todo seu código atual, performance 78% do nativo (~25% mais lento mas funcional).
 
@@ -18,16 +18,18 @@ O PyRosetta nativo ARM (M1/M2) tem bug crítico de segmentation fault em `Mutate
 ## Opção 1: x86 PyRosetta via Rosetta 2 (RECOMENDADO)
 
 ### Vantagens
-✅ Mantém 100% do código Python atual
-✅ Setup em 30 minutos
-✅ Performance boa (78% do nativo)
-✅ GRATUITO
-✅ Funciona com todos seus scripts existentes
+
+- Mantém 100% do código Python atual
+- Setup em 30 minutos
+- Performance boa (78% do nativo)
+- GRATUITO
+- Funciona com todos seus scripts existentes
 
 ### Desvantagens
-❌ 20-25% mais lento que nativo
-❌ Primeiro load ~30-60 segundos (cache warming)
-❌ Precisa sempre usar `arch -x86_64`
+
+- 20-25% mais lento que nativo
+- Primeiro load ~30-60 segundos (cache warming)
+- Precisa sempre usar `arch -x86_64`
 
 ### Instalação
 
@@ -94,17 +96,19 @@ python run_analysis.py
 ## Opção 2: Rosetta C++ + Python Wrapper (PRODUÇÃO)
 
 ### Vantagens
-✅ Performance nativa ARM (mais rápido)
-✅ 100% estável (sem segfaults)
-✅ Melhor para publicações
-✅ GRATUITO (licença acadêmica)
-✅ Dask paralelização
+
+- Performance nativa ARM (mais rápido)
+- 100% estável (sem segfaults)
+- Melhor para publicações
+- GRATUITO (licença acadêmica)
+- Dask paralelização
 
 ### Desvantagens
-❌ Setup mais complexo (~2-3 horas)
-❌ Compilação demorada (~30-60 min)
-❌ Download grande (~2-3 GB)
-❌ Precisa reescrever parte do código
+
+- Setup mais complexo (~2-3 horas)
+- Compilação demorada (~30-60 min)
+- Download grande (~2-3 GB)
+- Precisa reescrever parte do código
 
 ### Quando usar
 - Análises finais para publicação
@@ -164,16 +168,18 @@ def run_flexddg_cpp(pdb_path, mutations_file, nstruct=50):
 ## Opção 3: AWS Cloud (LARGA ESCALA)
 
 ### Vantagens
-✅ Escalável (paralelo)
-✅ x86 estável
-✅ Libera seu Mac
-✅ GPU disponível se necessário
+
+- Escalável (paralelo)
+- x86 estável
+- Libera seu Mac
+- GPU disponível se necessário
 
 ### Desvantagens
-❌ Custo: $3-8/dia
-❌ Precisa internet
-❌ Upload/download de dados
-❌ Curva de aprendizado AWS
+
+- Custo: $3-8/dia
+- Precisa internet
+- Upload/download de dados
+- Curva de aprendizado AWS
 
 ### Custo estimado para eIF4E
 
@@ -210,11 +216,11 @@ pyrosetta.init()
 
 | Critério | x86 PyRosetta | Rosetta C++ | AWS Cloud | Google Colab |
 |----------|---------------|-------------|-----------|--------------|
-| **Setup** | ⭐⭐⭐⭐⭐ 30 min | ⭐⭐ 2-3h | ⭐⭐⭐ 1h | ⭐⭐⭐⭐ 15 min |
-| **Performance** | ⭐⭐⭐⭐ 78% | ⭐⭐⭐⭐⭐ 100% | ⭐⭐⭐⭐⭐ 100% | ⭐⭐⭐ 60% |
-| **Estabilidade** | ⭐⭐⭐⭐ Boa | ⭐⭐⭐⭐⭐ Perfeita | ⭐⭐⭐⭐⭐ Perfeita | ⭐⭐⭐⭐ Boa |
+| **Setup** | 30 min | 2-3h | 1h | 15 min |
+| **Performance** | 78% | 100% | 100% | 60% |
+| **Estabilidade** | Boa | Perfeita | Perfeita | Boa |
 | **Custo** | GRÁTIS | GRÁTIS | $3-8/análise | GRÁTIS |
-| **Código atual** | ⭐⭐⭐⭐⭐ 100% | ⭐⭐⭐ 70% | ⭐⭐⭐⭐⭐ 100% | ⭐⭐⭐⭐⭐ 100% |
+| **Código atual** | 100% | 70% | 100% | 100% |
 | **eIF4E (22h)** | ~26h | ~22h | ~18h | ~30h (2 sessões) |
 
 ---
@@ -222,16 +228,16 @@ pyrosetta.init()
 ## Decisão Rápida
 
 ### Para começar HOJE (testando):
-→ **x86 PyRosetta** (Opção 1)
+ **x86 PyRosetta** (Opção 1)
 
 ### Para publicação (máxima acurácia):
-→ **Rosetta C++** (Opção 2)
+ **Rosetta C++** (Opção 2)
 
 ### Para >500 mutações (paralelizar):
-→ **AWS Cloud** (Opção 3)
+ **AWS Cloud** (Opção 3)
 
 ### Para testar rápido (sem instalar nada):
-→ **Google Colab** (Opção 3)
+ **Google Colab** (Opção 3)
 
 ---
 
@@ -262,7 +268,7 @@ Baseado no seu projeto (eIF4E, 132 mutações, nstruct=50 para publicação):
 
 | Plataforma | Tempo/mutação | Tempo total | Custo |
 |------------|---------------|-------------|-------|
-| **M1 ARM nativo** | ❌ QUEBRADO | - | - |
+| **M1 ARM nativo** | QUEBRADO | - | - |
 | **x86 PyRosetta** | ~12 min | **26 horas** | GRÁTIS |
 | **Rosetta C++** | ~10 min | **22 horas** | GRÁTIS |
 | **AWS c6i.2xlarge** | ~8 min | **18 horas** | $7.48 |
