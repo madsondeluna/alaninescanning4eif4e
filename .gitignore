@@ -51,3 +51,7 @@ Thumbs.db
 # Data
 *.pdb
 !example.pdb
+
+# Analysis results (ignore all except .gitkeep)
+eif4e-test/analysis_results/*
+!eif4e-test/analysis_results/.gitkeep
