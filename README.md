@@ -167,7 +167,7 @@ from rosetta_scan.protocols.flex_ddg_pyrosetta import (
 
 # Configurar protocolo
 config = FlexDdGConfig(
-    nstruct=35,      # Número de estruturas no ensemble
+    nstruct=35,       # Número de estruturas no ensemble
     iterations=3,     # Iterações backrub
     temperature=0.6,  # Temperatura Monte Carlo
     repack_radius=8.0 # Raio de repacking (Å)
@@ -576,8 +576,8 @@ alaninescanning4eif4e/
 │       ├── protocols/
 │       │   └── flex_ddg_pyrosetta.py  # Implementação Flex ddG
 │       └── analysis/
-│           ├── parser.py          # Parser de resultados
-│           └── visualizer.py      # Visualizações
+│           ├── parser.py              # Parser de resultados
+│           └── visualizer.py          # Visualizações
 │
 └── eif4e-test/
     ├── README.md                  # Documentação do exemplo
@@ -620,6 +620,6 @@ MIT License
 
 ## Contato
 
-Madson Luna - madsondeluna@gmail.com
+Madson Argão - madsondeluna@gmail.com
 
 GitHub: https://github.com/madsondeluna/alaninescanning4eif4e
