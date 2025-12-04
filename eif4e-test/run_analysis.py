@@ -104,7 +104,7 @@ def main():
     config = FlexDdGConfig(
         nstruct=5,                    # Alterar para 35 em produção
         repack_radius=8.0,
-        max_minimization_iter=200
+        max_minimization_iter=100     # Reduzido de 200 para evitar segfault
     )
 
     print(f"\nEtapa 2: Executando Flex ddG")

@@ -21,7 +21,6 @@ Protocolo:
 
 import pyrosetta
 from pyrosetta import rosetta
-from pyrosetta.rosetta.protocols.relax import FastRelax
 from pyrosetta.rosetta.core.pack.task import TaskFactory
 from pyrosetta.rosetta.core.pack.task.operation import (
     RestrictToRepacking,
@@ -257,21 +256,31 @@ class FlexDdGPyRosetta:
 
     def _relax_structure(self, pose: pyrosetta.Pose):
         """
-        Relaxa estrutura usando FastRelax.
+        Relaxa estrutura usando MinMover (minimização simples).
 
-        FastRelax é o protocolo padrão do Rosetta para relaxamento de estruturas,
-        alternando entre repacking de cadeias laterais e minimização.
+        Usa MinMover em vez de FastRelax para evitar segfaults.
+        Mais estável mas menos rigoroso.
 
         Args:
             pose: Estrutura a ser relaxada (modificada in-place)
         """
-        # Configurar FastRelax
-        fast_relax = FastRelax()
-        fast_relax.set_scorefxn(self.scorefxn)
-        fast_relax.max_iter(self.config.max_minimization_iter)
+        from pyrosetta.rosetta.protocols.minimization_packing import MinMover
+        from pyrosetta.rosetta.core.kinematics import MoveMap
 
-        # Aplicar relaxamento
-        fast_relax.apply(pose)
+        # Configurar MinMover
+        movemap = MoveMap()
+        movemap.set_bb(True)  # Permite movimento de backbone
+        movemap.set_chi(True)  # Permite movimento de side chains
+
+        min_mover = MinMover()
+        min_mover.movemap(movemap)
+        min_mover.score_function(self.scorefxn)
+        min_mover.min_type('lbfgs_armijo_nonmonotone')
+        min_mover.tolerance(0.01)
+        min_mover.max_iter(self.config.max_minimization_iter)
+
+        # Aplicar minimização
+        min_mover.apply(pose)
 
     def _mutate_residue(
         self,
