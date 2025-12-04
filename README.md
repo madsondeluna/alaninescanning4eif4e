@@ -620,6 +620,6 @@ MIT License
 
 ## Contato
 
-Madson Argão - madsondeluna@gmail.com
+Madson Aragão - madsondeluna@gmail.com
 
 GitHub: https://github.com/madsondeluna/alaninescanning4eif4e
